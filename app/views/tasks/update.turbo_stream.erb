@@ -1,0 +1,6 @@
+<%= turbo_stream.replace "task_#{@task.id}" do %>
+  <%= render "tasks/task", task: @task %>
+<% end %>
+<%= turbo_stream.replace "roadmap_progress_#{@task.roadmap_id}" do %>
+  <%= render "roadmaps/progress", roadmap: @task.roadmap %>
+<% end %>

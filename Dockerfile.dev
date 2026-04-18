@@ -1,0 +1,16 @@
+FROM ruby:3.2-bullseye
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get update -qq \
+    && apt-get install -y build-essential libpq-dev nodejs
+
+RUN npm install -g yarn
+
+WORKDIR /app
+
+RUN gem install bundler
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+EXPOSE 3000

@@ -1,0 +1,16 @@
+<div id="roadmap_progress_<%= roadmap.id %>">
+  <div class="flex items-center justify-between mb-2">
+    <span class="text-sm text-gray-600"><%= roadmap.tasks.where(completed: true).count %> / <%= roadmap.tasks.count %> タスク完了</span>
+    <div class="flex items-center gap-2">
+      <span class="text-2xl font-bold text-indigo-600"><%= roadmap.progress_percentage %>%</span>
+      <% if roadmap.completed? %>
+        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-700">完了</span>
+      <% else %>
+        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">進行中</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-3">
+    <div class="<%= roadmap.completed? ? 'bg-green-500' : 'bg-indigo-500' %> h-3 rounded-full transition-all duration-500" style="width: <%= roadmap.progress_percentage %>%"></div>
+  </div>
+</div>
