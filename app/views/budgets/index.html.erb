@@ -49,7 +49,44 @@
       <% end %>
     </div>
 
-    <!-- ① 電気・ガス・水道 -->
+    <!-- ① 固定費 -->
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div style="width:11px; height:11px; border-radius:50%; background:#3b82f6; flex-shrink:0;"></div>
+          <h3 class="font-semibold text-gray-800" style="font-size:16px;">固定費</h3>
+        </div>
+        <%= link_to fixed_expenses_path,
+              style: "font-size:13px; color:#3b82f6; font-weight:600; text-decoration:none;" do %>
+          設定 →
+        <% end %>
+      </div>
+
+      <div style="padding:24px 32px;">
+        <% if @fixed_expenses.empty? %>
+          <p style="font-size:14px; color:#9ca3af; text-align:center; padding:16px 0;">
+            固定費が設定されていません<br>
+            <%= link_to "設定する →", fixed_expenses_path, style: "color:#3b82f6; font-size:13px;" %>
+          </p>
+        <% else %>
+          <% @fixed_expenses.each do |expense| %>
+            <div class="flex items-center justify-between" style="padding:14px 0; border-bottom:1px solid #f9fafb;">
+              <span style="font-size:14px; color:#374151;"><%= expense.name %></span>
+              <span style="font-size:15px; font-weight:600; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% unless @fixed_expenses.empty? %>
+        <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
+          <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
+          <span style="font-size:18px; font-weight:700; color:#2563eb;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ② 電気・ガス・水道 -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
       <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -159,43 +196,6 @@
         <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
           <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
           <span style="font-size:18px; font-weight:700; color:#7c3aed;">¥<%= number_with_delimiter(@budget.other_total.to_i) %></span>
-        </div>
-      <% end %>
-    </div>
-
-    <!-- ③ 固定費 -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div style="width:11px; height:11px; border-radius:50%; background:#3b82f6; flex-shrink:0;"></div>
-          <h3 class="font-semibold text-gray-800" style="font-size:16px;">固定費</h3>
-        </div>
-        <%= link_to fixed_expenses_path,
-              style: "font-size:13px; color:#3b82f6; font-weight:600; text-decoration:none;" do %>
-          設定 →
-        <% end %>
-      </div>
-
-      <div style="padding:24px 32px;">
-        <% if @fixed_expenses.empty? %>
-          <p style="font-size:14px; color:#9ca3af; text-align:center; padding:16px 0;">
-            固定費が設定されていません<br>
-            <%= link_to "設定する →", fixed_expenses_path, style: "color:#3b82f6; font-size:13px;" %>
-          </p>
-        <% else %>
-          <% @fixed_expenses.each do |expense| %>
-            <div class="flex items-center justify-between" style="padding:14px 0; border-bottom:1px solid #f9fafb;">
-              <span style="font-size:14px; color:#374151;"><%= expense.name %></span>
-              <span style="font-size:15px; font-weight:600; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-
-      <% unless @fixed_expenses.empty? %>
-        <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
-          <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
-          <span style="font-size:18px; font-weight:700; color:#2563eb;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
         </div>
       <% end %>
     </div>
