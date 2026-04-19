@@ -1,24 +1,24 @@
 <div class="min-h-screen bg-gray-50">
 
-  <!-- ヒーローヘッダー -->
-  <div style="background:linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
-    <div class="max-w-5xl mx-auto px-8 py-10">
-      <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-        <%= link_to root_path, style: "color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:6px; font-size:13px; text-decoration:none;" do %>
-          <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-          ダッシュボードへ
-        <% end %>
-      </div>
-      <h1 style="font-size:28px; font-weight:800; color:white; margin-bottom:8px;">特化型AI</h1>
-      <p style="font-size:15px; color:rgba(255,255,255,0.75); max-width:480px; line-height:1.6;">
-        キーワードや概要を入力するだけで、各分野の専門AIが精度の高い回答を生成します
-      </p>
+  <header class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-8 py-5 flex items-center gap-4">
+      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>ダッシュボード</span>
+      <% end %>
+      <span class="text-gray-200">|</span>
+      <div class="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center text-sm">🤖</div>
+      <h1 class="text-xl font-bold text-gray-900">特化型AI</h1>
     </div>
-  </div>
+  </header>
 
   <main class="max-w-5xl mx-auto px-8 py-10">
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">AI一覧</h2>
+      <p class="text-sm text-gray-400 mt-1">キーワードや概要を入力するだけで、専門AIが精度の高い回答を生成します</p>
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       <% @specialties.each do |specialty| %>
         <%= link_to ai_specialty_path(specialty),
@@ -51,6 +51,7 @@
 
         <% end %>
       <% end %>
+    </div>
     </div>
   </main>
 </div>
