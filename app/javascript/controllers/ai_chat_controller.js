@@ -12,10 +12,13 @@ export default class extends Controller {
     const text = this.inputTarget.value.trim()
     if (!text || this.submitTarget.disabled) return
 
+    this.removeEmptyState()
     this.appendMessage("user", text)
     this.history.push({ role: "user", content: text })
     this.inputTarget.value = ""
+    this.autoResize()
     this.setLoading(true)
+    this.scrollBottom()
 
     try {
       const res = await fetch(this.urlValue, {
@@ -38,6 +41,7 @@ export default class extends Controller {
       this.appendMessage("error", "通信エラーが発生しました")
     } finally {
       this.setLoading(false)
+      this.scrollBottom()
     }
   }
 
@@ -48,39 +52,62 @@ export default class extends Controller {
     }
   }
 
+  autoResize() {
+    const ta = this.inputTarget
+    ta.style.height = "auto"
+    ta.style.height = Math.min(ta.scrollHeight, 160) + "px"
+  }
+
   appendMessage(role, text) {
     const wrap = document.createElement("div")
+    wrap.style.cssText = "max-width:768px; margin:0 auto 16px;"
 
     if (role === "user") {
-      wrap.style.cssText = "display:flex; justify-content:flex-end;"
-      const bubble = document.createElement("div")
-      bubble.style.cssText = "max-width:80%; background:#6366f1; color:white; border-radius:18px 18px 4px 18px; padding:12px 16px; font-size:14px; line-height:1.6; white-space:pre-wrap; word-break:break-word;"
-      bubble.textContent = text
-      wrap.appendChild(bubble)
+      wrap.innerHTML = `
+        <div style="display:flex; justify-content:flex-end;">
+          <div style="max-width:78%; background:#6366f1; color:white; border-radius:18px 18px 4px 18px; padding:13px 17px; font-size:14px; line-height:1.7; white-space:pre-wrap; word-break:break-word; box-shadow:0 2px 8px rgba(99,102,241,0.25);">
+            ${this.escape(text)}
+          </div>
+        </div>`
     } else if (role === "assistant") {
-      wrap.style.cssText = "display:flex; justify-content:flex-start; gap:10px;"
-      const icon = document.createElement("div")
-      icon.style.cssText = "width:32px; height:32px; border-radius:10px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; margin-top:2px;"
-      icon.textContent = "🤖"
-      const bubble = document.createElement("div")
-      bubble.style.cssText = "max-width:85%; background:white; border:1px solid #e5e7eb; border-radius:4px 18px 18px 18px; padding:14px 16px; font-size:14px; line-height:1.7; white-space:pre-wrap; word-break:break-word; box-shadow:0 1px 3px rgba(0,0,0,0.06);"
-      bubble.textContent = text
-      wrap.appendChild(icon)
-      wrap.appendChild(bubble)
+      wrap.innerHTML = `
+        <div style="display:flex; align-items:flex-start; gap:10px;">
+          <div style="width:34px; height:34px; border-radius:11px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; margin-top:2px;">🤖</div>
+          <div style="flex:1; min-width:0; background:white; border:1px solid #e5e7eb; border-radius:4px 18px 18px 18px; padding:14px 18px; font-size:14px; line-height:1.8; white-space:pre-wrap; word-break:break-word; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+            ${this.escape(text)}
+          </div>
+        </div>`
     } else {
-      wrap.style.cssText = "display:flex; justify-content:center;"
-      const bubble = document.createElement("div")
-      bubble.style.cssText = "background:#fef2f2; color:#dc2626; border-radius:12px; padding:10px 16px; font-size:13px;"
-      bubble.textContent = text
-      wrap.appendChild(bubble)
+      wrap.innerHTML = `
+        <div style="display:flex; justify-content:center;">
+          <div style="background:#fef2f2; color:#dc2626; border:1px solid #fecaca; border-radius:12px; padding:10px 18px; font-size:13px;">
+            ${this.escape(text)}
+          </div>
+        </div>`
     }
 
     this.messagesTarget.appendChild(wrap)
-    this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+  }
+
+  removeEmptyState() {
+    const el = document.getElementById("ai-chat-empty-state")
+    if (el) el.remove()
   }
 
   setLoading(loading) {
-    this.submitTarget.disabled     = loading
-    this.loadingTarget.style.display = loading ? "flex" : "none"
+    this.submitTarget.disabled       = loading
+    this.loadingTarget.style.display = loading ? "block" : "none"
+  }
+
+  scrollBottom() {
+    this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+  }
+
+  escape(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br>")
   }
 }
