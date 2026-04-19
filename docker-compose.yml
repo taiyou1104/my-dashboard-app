@@ -22,7 +22,7 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:password@db/my_dashboard_app_development
       RAILS_ENV: development
-    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails tailwindcss:build && bundle exec rails tailwindcss:watch & bundle exec rails server -b 0.0.0.0"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails tailwindcss:build && (bundle exec rails tailwindcss:watch & bundle exec rails server -b 0.0.0.0)"
 
 volumes:
   postgres_data:
