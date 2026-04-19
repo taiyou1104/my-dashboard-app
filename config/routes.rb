@@ -5,12 +5,7 @@ Rails.application.routes.draw do
 
   resource :profile, only: [:show, :edit, :update]
   resources :budgets, only: [:index, :update] do
-    resources :monthly_expenses, only: [:create, :destroy] do
-      collection do
-        post :batch_create
-      end
-    end
-    resources :receipt_scans, only: [:create]
+    resources :monthly_expenses, only: [:create, :destroy]
   end
   resources :fixed_expenses, only: [:index, :create, :update, :destroy]
   resources :roadmaps, only: [:index, :new, :create, :show, :destroy] do

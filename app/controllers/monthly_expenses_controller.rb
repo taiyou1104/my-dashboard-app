@@ -9,21 +9,6 @@ class MonthlyExpensesController < ApplicationController
     end
   end
 
-  def batch_create
-    @budget = MonthlyBudget.find(params[:budget_id])
-    items   = params[:items]&.values || []
-    added   = 0
-
-    items.each do |item|
-      next unless item[:selected] == "1" && item[:name].present? && item[:amount].to_i > 0
-      @budget.monthly_expenses.create!(name: item[:name], amount: item[:amount].to_i)
-      added += 1
-    end
-
-    redirect_to budgets_path(year: @budget.year, month: @budget.month),
-                notice: "#{added}件追加しました"
-  end
-
   def destroy
     @budget = MonthlyBudget.find(params[:budget_id])
     @budget.monthly_expenses.find(params[:id]).destroy

@@ -188,32 +188,6 @@
           </div>
         <% end %>
 
-        <!-- レシートスキャン -->
-        <div style="margin-top:16px; border-top:1px solid #f3f4f6; padding-top:18px;">
-          <%= form_with url: budget_receipt_scans_path(@budget), method: :post, multipart: true,
-                data: { controller: "loading" } do |f| %>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <label style="flex:1; display:flex; align-items:center; gap:10px; border:1.5px dashed #d1d5db; border-radius:12px; padding:11px 16px; cursor:pointer; background:#fafafa;">
-                <svg style="width:18px; height:18px; color:#9ca3af; flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <span id="receipt-filename" style="font-size:13px; color:#9ca3af;">レシートの画像を選択</span>
-                <%= f.file_field :receipt_image, accept: "image/*",
-                      style: "display:none;",
-                      onchange: "document.getElementById('receipt-filename').textContent = this.files[0]?.name || 'レシートの画像を選択'" %>
-              </label>
-              <%= f.submit "スキャン",
-                    data: { loading_target: "button" },
-                    style: "flex-shrink:0; padding:12px 20px; background:#6d28d9; color:white; font-size:14px; font-weight:700; border-radius:12px; border:none; cursor:pointer;" %>
-            </div>
-            <div data-loading-target="overlay" class="hidden" style="margin-top:12px; display:flex; align-items:center; gap:8px; color:#7c3aed; font-size:13px;">
-              <svg style="width:16px; height:16px; animation:spin 1s linear infinite;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-              </svg>
-              AIがレシートを解析中です...
-            </div>
-          <% end %>
-        </div>
       </div>
 
       <% unless @budget.monthly_expenses.empty? %>
