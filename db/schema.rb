@@ -10,9 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_18_000004) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "fixed_expenses", force: :cascade do |t|
+    t.decimal "amount", precision: 10, null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "monthly_budgets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "electricity", precision: 10
+    t.decimal "gas", precision: 10
+    t.integer "month", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "water", precision: 10
+    t.integer "year", null: false
+    t.index ["year", "month"], name: "index_monthly_budgets_on_year_and_month", unique: true
+  end
+
+  create_table "monthly_expenses", force: :cascade do |t|
+    t.decimal "amount", precision: 10, null: false
+    t.datetime "created_at", null: false
+    t.bigint "monthly_budget_id", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["monthly_budget_id"], name: "index_monthly_expenses_on_monthly_budget_id"
+  end
 
   create_table "profiles", force: :cascade do |t|
     t.text "certifications"
@@ -45,5 +72,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_18_000004) do
     t.index ["roadmap_id"], name: "index_tasks_on_roadmap_id"
   end
 
+  add_foreign_key "monthly_expenses", "monthly_budgets"
   add_foreign_key "tasks", "roadmaps"
 end

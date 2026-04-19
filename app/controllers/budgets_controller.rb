@@ -21,6 +21,6 @@ class BudgetsController < ApplicationController
   private
 
   def budget_params
-    params.require(:monthly_budget).permit(:electricity, :gas, :water, :phone, :internet)
+    params.require(:monthly_budget).permit(:electricity, :gas, :water)
   end
 end
