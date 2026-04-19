@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resource :profile, only: [:show, :edit, :update]
+  resources :budgets, only: [:index, :update]
+  resources :fixed_expenses, only: [:index, :create, :update, :destroy]
   resources :roadmaps, only: [:index, :new, :create, :show, :destroy] do
     resources :chats, only: [:create]
   end
