@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resource :profile, only: [:show, :edit, :update]
+  resources :ai_specialties, only: [:index, :show] do
+    resources :ai_specialty_chats, only: [:create]
+  end
   resources :budgets, only: [:index, :update] do
     resources :monthly_expenses, only: [:create, :destroy]
   end

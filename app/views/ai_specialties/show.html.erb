@@ -1,0 +1,72 @@
+<div class="min-h-screen bg-gray-50" data-controller="ai-chat"
+     data-ai-chat-url-value="<%= ai_specialty_ai_specialty_chats_path(@specialty) %>">
+
+  <header class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-3xl mx-auto px-8 py-5 flex items-center gap-4">
+      <%= link_to ai_specialties_path, class: "text-gray-400 hover:text-gray-600 transition-colors" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+           style="background:<%= @specialty.bg_color %>;">
+        <%= @specialty.icon_emoji %>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold text-gray-900"><%= @specialty.name %></h1>
+        <p class="text-xs text-gray-400"><%= @specialty.description %></p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-8 py-8 flex flex-col" style="height: calc(100vh - 73px);">
+
+    <!-- ヒントカード -->
+    <div class="rounded-2xl border p-5 mb-6 flex-shrink-0"
+         style="background:<%= @specialty.bg_color %>; border-color:<%= @specialty.color %>22;">
+      <p class="text-xs font-semibold mb-2" style="color:<%= @specialty.color %>;">
+        💡 こんな感じで入力するだけでOK
+      </p>
+      <p class="text-sm text-gray-600"><%= @specialty.input_placeholder %></p>
+    </div>
+
+    <!-- メッセージエリア -->
+    <div data-ai-chat-target="messages"
+         class="flex-1 overflow-y-auto space-y-4 mb-6 pr-1">
+    </div>
+
+    <!-- ローディング -->
+    <div data-ai-chat-target="loading"
+         style="display:none; align-items:center; gap:8px; margin-bottom:16px; color:<%= @specialty.color %>; font-size:13px;">
+      <svg style="width:16px; height:16px; animation:ai-spin 1s linear infinite;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+      </svg>
+      AIが回答を生成中です...
+    </div>
+
+    <!-- 入力エリア -->
+    <div class="flex-shrink-0 bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+      <textarea data-ai-chat-target="input"
+                data-action="keydown->ai-chat#keydown"
+                placeholder="<%= @specialty.input_placeholder %>"
+                rows="3"
+                style="width:100%; resize:none; border:none; outline:none; font-size:14px; color:#1f2937; line-height:1.6;"></textarea>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <span style="font-size:12px; color:#9ca3af;">Ctrl + Enter で送信</span>
+        <button data-ai-chat-target="submit"
+                data-action="click->ai-chat#send"
+                style="padding:10px 24px; border-radius:12px; border:none; font-size:14px; font-weight:700; color:white; cursor:pointer; background:<%= @specialty.color %>;">
+          送信
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<style>
+  @keyframes ai-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+</style>

@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_000003) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_000004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "ai_specialties", force: :cascade do |t|
+    t.string "bg_color", default: "#eef2ff", null: false
+    t.string "color", default: "#6366f1", null: false
+    t.datetime "created_at", null: false
+    t.string "description", null: false
+    t.string "icon_emoji", default: "🤖", null: false
+    t.string "input_placeholder", default: "キーワードや概要を入力...", null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.text "prompt_template", null: false
+    t.text "system_prompt", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "fixed_expenses", force: :cascade do |t|
     t.decimal "amount", precision: 10, null: false
