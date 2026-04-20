@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen" style="background:#f1f5f9;">
 
-  <header class="bg-white border-b border-gray-200 shadow-sm">
-    <div class="max-w-5xl mx-auto px-8 py-5 flex items-center gap-4">
-      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors" do %>
+  <header class="bg-white border-b border-gray-200" style="box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+    <div class="max-w-5xl mx-auto px-10 py-6 flex items-center gap-4">
+      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
@@ -14,20 +14,20 @@
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-8 py-10">
-    <div class="mb-8">
-      <h2 class="text-2xl font-bold text-gray-800">AI一覧</h2>
-      <p class="text-sm text-gray-400 mt-1">キーワードや概要を入力するだけで、専門AIが精度の高い回答を生成します</p>
+  <main class="max-w-5xl mx-auto px-10 py-14">
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold text-gray-900">AI一覧</h2>
+      <p class="text-sm text-gray-500 mt-2">キーワードや概要を入力するだけで、専門AIが精度の高い回答を生成します</p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
       <% @specialties.each do |specialty| %>
         <%= link_to ai_specialty_path(specialty),
-              style: "display:block; background:white; border-radius:20px; border:1.5px solid #e5e7eb; box-shadow:0 1px 4px rgba(0,0,0,0.06); text-decoration:none; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s; position:relative;",
+              style: "display:block; background:white; border-radius:20px; border:1px solid #e5e7eb; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-decoration:none; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s; position:relative;",
               onmouseover: "this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)'; this.style.transform='translateY(-2px)'",
-              onmouseout:  "this.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)'; this.style.transform='translateY(0)'" do %>
+              onmouseout:  "this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'; this.style.transform='translateY(0)'" do %>
 
           <!-- カラーヘッダー -->
-          <div style="background:<%= specialty.bg_color %>; padding:24px 24px 20px; display:flex; align-items:flex-start; justify-content:space-between;">
+          <div style="background:<%= specialty.bg_color %>; padding:28px 28px 24px; display:flex; align-items:flex-start; justify-content:space-between;">
             <span style="font-size:36px; line-height:1;"><%= specialty.icon_emoji %></span>
             <div style="width:28px; height:28px; border-radius:50%; background:white; display:flex; align-items:center; justify-content:center; opacity:0.8;">
               <svg style="width:14px; height:14px; color:<%= specialty.color %>;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,17 +37,17 @@
           </div>
 
           <!-- コンテンツ -->
-          <div style="padding:18px 20px 20px;">
-            <h3 style="font-size:15px; font-weight:700; color:#1f2937; margin-bottom:6px;">
+          <div style="padding:24px 28px 28px;">
+            <h3 style="font-size:15px; font-weight:700; color:#111827; margin-bottom:10px;">
               <%= specialty.name %>
             </h3>
-            <p style="font-size:12px; color:#6b7280; line-height:1.5;">
+            <p style="font-size:12px; color:#6b7280; line-height:1.7;">
               <%= specialty.description %>
             </p>
           </div>
 
           <!-- カラーボトムライン -->
-          <div style="height:3px; background:<%= specialty.color %>; margin:0 20px 20px; border-radius:99px;"></div>
+          <div style="height:3px; background:<%= specialty.color %>; margin:0 28px 28px; border-radius:99px;"></div>
 
         <% end %>
       <% end %>

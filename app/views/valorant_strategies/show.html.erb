@@ -1,0 +1,117 @@
+<div class="min-h-screen" style="background:#0f1923;">
+
+  <header style="background:#1a2634; border-bottom:1px solid #2a3f52;">
+    <div class="max-w-6xl mx-auto px-10 py-6 flex items-center gap-4">
+      <%= link_to valorant_strategies_path, class: "flex items-center gap-1.5 text-sm flex-shrink-0 transition-colors", style: "color:#7f8c8d;", onmouseover: "this.style.color='#ecf0f1'", onmouseout: "this.style.color='#7f8c8d'" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>一覧</span>
+      <% end %>
+      <span style="color:#2a3f52;">|</span>
+      <span style="font-size:18px;">🎯</span>
+      <div class="flex-1 min-w-0">
+        <h1 class="text-lg font-bold" style="color:#ecf0f1;"><%= @strategy.map %> 作戦</h1>
+        <p class="text-xs mt-0.5" style="color:#7f8c8d;"><%= @strategy.agent_list.join(" / ") %></p>
+      </div>
+      <%= button_to valorant_strategy_path(@strategy), method: :delete,
+            data: { turbo_confirm: "この作戦を削除しますか？" },
+            class: "flex-shrink-0 flex items-center gap-1 text-xs transition-colors",
+            style: "background:none; border:none; cursor:pointer; color:#4a5568;",
+            onmouseover: "this.style.color='#ff4655'",
+            onmouseout:  "this.style.color='#4a5568'" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+        削除
+      <% end %>
+    </div>
+  </header>
+
+  <!-- エージェントバッジ -->
+  <div style="background:#152130; border-bottom:1px solid #2a3f52; padding:16px 0;">
+    <div class="max-w-6xl mx-auto px-10 flex items-center gap-3">
+      <span class="text-xs font-semibold" style="color:#7f8c8d;">構成:</span>
+      <% @strategy.agent_list.each do |agent| %>
+        <span class="text-xs font-bold px-3 py-1 rounded-full" style="background:#1e3a4a; color:#60a5fa; border:1px solid #2a4f6a;">
+          <%= agent %>
+        </span>
+      <% end %>
+      <span class="ml-auto text-xs" style="color:#4a5568;"><%= @strategy.created_at.strftime("%Y年%-m月%-d日") %>生成</span>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-10 py-12">
+
+    <!-- タブ切り替え -->
+    <div class="flex gap-2 mb-8" id="tab-buttons">
+      <button onclick="showTab('attack')" id="tab-attack"
+              class="px-6 py-3 rounded-xl text-sm font-bold transition-all"
+              style="background:#ff4655; color:#fff; border:none; cursor:pointer;">
+        ⚔️ 攻撃（12ラウンド）
+      </button>
+      <button onclick="showTab('defense')" id="tab-defense"
+              class="px-6 py-3 rounded-xl text-sm font-bold transition-all"
+              style="background:#1a2634; color:#7f8c8d; border:1px solid #2a3f52; cursor:pointer;">
+        🛡️ 防衛（12ラウンド）
+      </button>
+    </div>
+
+    <!-- 攻撃ラウンド -->
+    <div id="panel-attack">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <% @strategy.parsed_attack_rounds.each_with_index do |round, i| %>
+          <div class="rounded-2xl overflow-hidden" style="background:#1a2634; border:1px solid #2a3f52;">
+            <div class="px-5 py-3 flex items-center gap-3" style="background:#2d1515; border-bottom:1px solid #3d1f1f;">
+              <span class="text-xs font-black w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#ff4655; color:#fff;">
+                <%= round["round"] || i+1 %>
+              </span>
+              <h3 class="text-sm font-bold truncate" style="color:#fca5a5;"><%= round["title"] %></h3>
+            </div>
+            <div class="px-5 py-4">
+              <p class="text-sm leading-loose" style="color:#b0bec5; white-space:pre-line;"><%= round["desc"] %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 防衛ラウンド -->
+    <div id="panel-defense" style="display:none;">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <% @strategy.parsed_defense_rounds.each_with_index do |round, i| %>
+          <div class="rounded-2xl overflow-hidden" style="background:#1a2634; border:1px solid #2a3f52;">
+            <div class="px-5 py-3 flex items-center gap-3" style="background:#0d2137; border-bottom:1px solid #1a3a52;">
+              <span class="text-xs font-black w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#3b82f6; color:#fff;">
+                <%= round["round"] || i+1 %>
+              </span>
+              <h3 class="text-sm font-bold truncate" style="color:#93c5fd;"><%= round["title"] %></h3>
+            </div>
+            <div class="px-5 py-4">
+              <p class="text-sm leading-loose" style="color:#b0bec5; white-space:pre-line;"><%= round["desc"] %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showTab(tab) {
+  document.getElementById('panel-attack').style.display  = tab === 'attack'  ? 'block' : 'none';
+  document.getElementById('panel-defense').style.display = tab === 'defense' ? 'block' : 'none';
+
+  const attackBtn  = document.getElementById('tab-attack');
+  const defenseBtn = document.getElementById('tab-defense');
+
+  if (tab === 'attack') {
+    attackBtn.style.background  = '#ff4655'; attackBtn.style.color  = '#fff'; attackBtn.style.border = 'none';
+    defenseBtn.style.background = '#1a2634'; defenseBtn.style.color = '#7f8c8d'; defenseBtn.style.border = '1px solid #2a3f52';
+  } else {
+    defenseBtn.style.background = '#3b82f6'; defenseBtn.style.color = '#fff'; defenseBtn.style.border = 'none';
+    attackBtn.style.background  = '#1a2634'; attackBtn.style.color  = '#7f8c8d'; attackBtn.style.border = '1px solid #2a3f52';
+  }
+}
+</script>

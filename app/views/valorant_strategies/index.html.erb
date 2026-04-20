@@ -1,0 +1,71 @@
+<div class="min-h-screen" style="background:#0f1923;">
+
+  <header style="background:#1a2634; border-bottom:1px solid #2a3f52;">
+    <div class="max-w-4xl mx-auto px-10 py-6 flex items-center gap-4">
+      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm transition-colors", style: "color:#7f8c8d;", onmouseover: "this.style.color='#ecf0f1'", onmouseout: "this.style.color='#7f8c8d'" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>ダッシュボード</span>
+      <% end %>
+      <span style="color:#2a3f52;">|</span>
+      <span style="font-size:20px;">🎯</span>
+      <h1 class="text-xl font-bold" style="color:#ecf0f1;">VALORANT 作戦立案</h1>
+      <%= link_to new_valorant_strategy_path,
+            class: "ml-auto px-5 py-2.5 text-sm font-bold rounded-xl transition-all",
+            style: "background:#ff4655; color:#fff;" do %>
+        + 新しい作戦
+      <% end %>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-10 py-12">
+
+    <% if @strategies.empty? %>
+      <div class="text-center py-24">
+        <div class="text-6xl mb-6">🎯</div>
+        <h2 class="text-lg font-bold mb-2" style="color:#ecf0f1;">まだ作戦がありません</h2>
+        <p class="text-sm mb-8" style="color:#7f8c8d;">マップと構成を入力するとAIが作戦を生成します</p>
+        <%= link_to "最初の作戦を生成する", new_valorant_strategy_path,
+              class: "px-6 py-3 text-sm font-bold rounded-xl",
+              style: "background:#ff4655; color:#fff;" %>
+      </div>
+    <% else %>
+      <div class="space-y-4">
+        <% @strategies.each do |strategy| %>
+          <div class="rounded-2xl overflow-hidden transition-all" style="background:#1a2634; border:1px solid #2a3f52;"
+               onmouseover="this.style.borderColor='#ff4655';"
+               onmouseout="this.style.borderColor='#2a3f52';">
+            <%= link_to valorant_strategy_path(strategy), style: "text-decoration:none; display:block; padding:24px 32px;" do %>
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-3 mb-2">
+                    <span class="text-lg font-black" style="color:#ff4655;"><%= strategy.map %></span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-semibold" style="background:#2a3f52; color:#7f8c8d;">
+                      <%= strategy.created_at.strftime("%-m/%-d") %>
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <% strategy.agent_list.each do |agent| %>
+                      <span class="text-xs px-2.5 py-1 rounded-full font-semibold" style="background:#152130; color:#60a5fa; border:1px solid #2a4f6a;">
+                        <%= agent %>
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="text-right flex-shrink-0 ml-6">
+                  <div class="flex items-center gap-4 text-xs" style="color:#4a5568;">
+                    <span>⚔️ 攻撃 <%= strategy.parsed_attack_rounds.count %>R</span>
+                    <span>🛡️ 防衛 <%= strategy.parsed_defense_rounds.count %>R</span>
+                  </div>
+                  <span class="text-xs font-semibold mt-2 block" style="color:#ff4655;">見る →</span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+  </main>
+</div>

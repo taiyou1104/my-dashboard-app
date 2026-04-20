@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_000004) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_223417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_000004) do
     t.integer "position", default: 0, null: false
     t.text "prompt_template", null: false
     t.text "system_prompt", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "author"
+    t.datetime "created_at", null: false
+    t.date "finished_on"
+    t.text "memo"
+    t.integer "rating"
+    t.date "started_on"
+    t.string "status", default: "want_to_read", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
   end
 
@@ -84,6 +96,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_000004) do
     t.datetime "updated_at", null: false
     t.index ["roadmap_id", "day_number"], name: "index_tasks_on_roadmap_id_and_day_number"
     t.index ["roadmap_id"], name: "index_tasks_on_roadmap_id"
+  end
+
+  create_table "valorant_strategies", force: :cascade do |t|
+    t.string "agents", null: false
+    t.text "attack_rounds"
+    t.datetime "created_at", null: false
+    t.text "defense_rounds"
+    t.string "map", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "monthly_expenses", "monthly_budgets"

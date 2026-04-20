@@ -15,4 +15,6 @@ Rails.application.routes.draw do
     resources :chats, only: [:create]
   end
   resources :tasks, only: [:update]
+  resources :books, only: [:index, :create, :update, :destroy]
+  resources :valorant_strategies, only: [:index, :new, :create, :show, :destroy]
 end

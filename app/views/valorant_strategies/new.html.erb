@@ -1,0 +1,145 @@
+<div class="min-h-screen" style="background:#0f1923;" data-controller="loading">
+
+  <!-- ローディングオーバーレイ -->
+  <div class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(15,25,35,0.92);" data-loading-target="overlay">
+    <div class="text-center">
+      <div class="w-16 h-16 mx-auto mb-5 relative">
+        <div class="absolute inset-0 rounded-full border-4" style="border-color:#ff4655;opacity:0.2;"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-t-transparent animate-spin" style="border-color:#ff4655;border-top-color:transparent;"></div>
+      </div>
+      <p class="font-bold text-lg" style="color:#ff4655;">AIが作戦を生成中...</p>
+      <p class="text-sm mt-1" style="color:#7f8c8d;">攻守24ラウンド分の作戦を立案しています（1〜2分）</p>
+    </div>
+  </div>
+
+  <header style="background:#1a2634; border-bottom:1px solid #2a3f52;">
+    <div class="max-w-3xl mx-auto px-10 py-6 flex items-center gap-4">
+      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm transition-colors", style: "color:#7f8c8d;", onmouseover: "this.style.color='#ecf0f1'", onmouseout: "this.style.color='#7f8c8d'" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>ダッシュボード</span>
+      <% end %>
+      <span style="color:#2a3f52;">|</span>
+      <span style="font-size:20px;">🎯</span>
+      <h1 class="text-xl font-bold" style="color:#ecf0f1;">VALORANT 作戦立案</h1>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-10 py-14">
+
+    <% if flash[:error] %>
+      <div class="mb-7 px-5 py-4 rounded-xl text-sm font-medium" style="background:#2d1515; border:1px solid #7f1d1d; color:#fca5a5;">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+
+    <div class="rounded-2xl overflow-hidden" style="background:#1a2634; border:1px solid #2a3f52;">
+      <div class="px-8 py-6" style="border-bottom:1px solid #2a3f52; background:#152130;">
+        <h2 class="font-bold" style="font-size:15px; color:#ecf0f1;">構成・マップを選択</h2>
+        <p class="text-sm mt-1" style="color:#7f8c8d;">AIが攻守各12ラウンドの作戦を自動生成します</p>
+      </div>
+
+      <div class="px-8 py-8">
+        <%= form_with model: @strategy, url: valorant_strategies_path, data: { action: "submit->loading#submit" } do |f| %>
+          <div class="space-y-8">
+
+            <!-- マップ -->
+            <div>
+              <label class="block text-sm font-semibold mb-3" style="color:#b0bec5;">
+                マップ <span style="color:#ff4655;">*</span>
+              </label>
+              <%= f.select :map,
+                    options_for_select(ValorantStrategy::MAPS.map { |m| [m, m] }, @strategy.map),
+                    { prompt: "マップを選択..." },
+                    style: "width:100%; padding:12px 16px; border-radius:12px; font-size:14px; font-weight:600; outline:none; cursor:pointer; background:#0f1923; color:#ecf0f1; border:1.5px solid #2a3f52;",
+                    onfocus: "this.style.borderColor='#ff4655'",
+                    onblur:  "this.style.borderColor='#2a3f52'" %>
+              <% if @strategy.errors[:map].any? %>
+                <p class="mt-2 text-xs" style="color:#ff4655;"><%= @strategy.errors[:map].first %></p>
+              <% end %>
+            </div>
+
+            <!-- エージェント構成 -->
+            <div>
+              <label class="block text-sm font-semibold mb-3" style="color:#b0bec5;">
+                エージェント構成（5人） <span style="color:#ff4655;">*</span>
+              </label>
+              <div class="grid grid-cols-5 gap-3">
+                <% 5.times do |i| %>
+                  <div>
+                    <p class="text-xs font-semibold mb-1.5 text-center" style="color:#4a5568;">P<%= i+1 %></p>
+                    <select name="agents_<%= i %>" onchange="updateAgents()"
+                            style="width:100%; padding:10px 8px; border-radius:10px; font-size:12px; font-weight:600; outline:none; cursor:pointer; background:#0f1923; color:#ecf0f1; border:1.5px solid #2a3f52; text-align:center;"
+                            onfocus="this.style.borderColor='#ff4655'"
+                            onblur="this.style.borderColor='#2a3f52'">
+                      <option value="">選択</option>
+                      <% ValorantStrategy::AGENTS.each do |role, agents| %>
+                        <optgroup label="<%= role %>">
+                          <% agents.each do |agent| %>
+                            <option value="<%= agent %>"><%= agent %></option>
+                          <% end %>
+                        </optgroup>
+                      <% end %>
+                    </select>
+                  </div>
+                <% end %>
+              </div>
+              <%= f.hidden_field :agents, id: "agents_hidden" %>
+              <% if @strategy.errors[:agents].any? %>
+                <p class="mt-2 text-xs" style="color:#ff4655;"><%= @strategy.errors[:agents].first %></p>
+              <% end %>
+
+              <!-- 選択中の構成プレビュー -->
+              <div id="agents-preview" class="mt-3 flex flex-wrap gap-2 min-h-8"></div>
+            </div>
+
+            <!-- 送信 -->
+            <div class="pt-2">
+              <%= f.submit "作戦を生成する",
+                    data: { loading_target: "button" },
+                    class: "px-8 py-4 text-white text-sm font-bold rounded-xl cursor-pointer transition-all",
+                    style: "background:#ff4655; border:none;" %>
+            </div>
+
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 過去の作戦 -->
+    <% if ValorantStrategy.any? %>
+      <div class="mt-10 rounded-2xl overflow-hidden" style="background:#1a2634; border:1px solid #2a3f52;">
+        <div class="px-8 py-5 flex items-center justify-between" style="border-bottom:1px solid #2a3f52; background:#152130;">
+          <h3 class="font-bold" style="font-size:14px; color:#b0bec5;">過去の作戦</h3>
+          <%= link_to "すべて見る →", valorant_strategies_path, style: "font-size:12px; color:#ff4655; font-weight:600;" %>
+        </div>
+        <div>
+          <% ValorantStrategy.ordered.limit(5).each do |s| %>
+            <div style="border-bottom:1px solid #1a2634; padding:16px 32px; display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <span class="text-sm font-bold" style="color:#ecf0f1;"><%= s.map %></span>
+                <span class="text-xs ml-3" style="color:#7f8c8d;"><%= s.agent_list.join(" / ") %></span>
+              </div>
+              <%= link_to "見る →", valorant_strategy_path(s), style: "font-size:12px; color:#ff4655; font-weight:600;" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </main>
+</div>
+
+<script>
+function updateAgents() {
+  const selects = document.querySelectorAll('select[name^="agents_"]');
+  const values = Array.from(selects).map(s => s.value).filter(v => v);
+  document.getElementById('agents_hidden').value = values.join(', ');
+
+  const preview = document.getElementById('agents-preview');
+  preview.innerHTML = values.map(v =>
+    `<span style="font-size:12px; font-weight:700; padding:4px 12px; border-radius:99px; background:#1e3a4a; color:#60a5fa; border:1px solid #2a4f6a;">${v}</span>`
+  ).join('');
+}
+</script>

@@ -1,7 +1,7 @@
-<div class="min-h-screen bg-gray-50">
-  <header class="bg-white border-b border-gray-200 shadow-sm">
-    <div class="max-w-2xl mx-auto px-8 py-5 flex items-center gap-4">
-      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors" do %>
+<div class="min-h-screen" style="background:#f1f5f9;">
+  <header class="bg-white border-b border-gray-200" style="box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+    <div class="max-w-2xl mx-auto px-10 py-6 flex items-center gap-4">
+      <%= link_to root_path, class: "flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
@@ -17,45 +17,47 @@
     </div>
   </header>
 
-  <main class="max-w-2xl mx-auto px-8 py-10 space-y-6">
+  <main class="max-w-2xl mx-auto px-10 py-14 space-y-8">
 
     <% if notice %>
-      <div class="px-6 py-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm">
+      <div class="px-6 py-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
         <%= notice %>
       </div>
     <% end %>
     <% if alert %>
-      <div class="px-6 py-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+      <div class="px-6 py-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium">
         <%= alert %>
       </div>
     <% end %>
 
     <!-- 年月ナビゲーション -->
-    <div class="flex items-center justify-between py-2">
-      <%= link_to budgets_path(year: @prev.year, month: @prev.month),
-            class: "w-12 h-12 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors shadow-sm" do %>
-        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-      <% end %>
-      <div class="text-center">
-        <p class="text-sm text-gray-400 mb-1"><%= @year %>年</p>
-        <h2 class="text-4xl font-bold text-gray-800"><%= @month %>月</h2>
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div class="flex items-center justify-between px-8 py-6">
+        <%= link_to budgets_path(year: @prev.year, month: @prev.month),
+              class: "w-11 h-11 flex items-center justify-center bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors" do %>
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        <% end %>
+        <div class="text-center">
+          <p class="text-sm font-medium text-gray-500 mb-1"><%= @year %>年</p>
+          <h2 class="text-5xl font-bold text-gray-900"><%= @month %>月</h2>
+        </div>
+        <%= link_to budgets_path(year: @next.year, month: @next.month),
+              class: "w-11 h-11 flex items-center justify-center bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors" do %>
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
       </div>
-      <%= link_to budgets_path(year: @next.year, month: @next.month),
-            class: "w-12 h-12 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors shadow-sm" do %>
-        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-      <% end %>
     </div>
 
     <!-- ① 固定費 -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center justify-between">
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="padding:24px 40px;" class="border-b border-gray-100 flex items-center justify-between bg-gray-50">
         <div class="flex items-center gap-3">
-          <div style="width:11px; height:11px; border-radius:50%; background:#3b82f6; flex-shrink:0;"></div>
-          <h3 class="font-semibold text-gray-800" style="font-size:16px;">固定費</h3>
+          <div style="width:10px; height:10px; border-radius:50%; background:#3b82f6; flex-shrink:0;"></div>
+          <h3 style="font-size:15px; font-weight:700; color:#111827;">固定費</h3>
         </div>
         <%= link_to fixed_expenses_path,
               style: "font-size:13px; color:#3b82f6; font-weight:600; text-decoration:none;" do %>
@@ -63,36 +65,36 @@
         <% end %>
       </div>
 
-      <div style="padding:24px 32px;">
+      <div style="padding:32px 40px;">
         <% if @fixed_expenses.empty? %>
-          <p style="font-size:14px; color:#9ca3af; text-align:center; padding:16px 0;">
+          <p style="font-size:14px; color:#6b7280; text-align:center; padding:20px 0;">
             固定費が設定されていません<br>
-            <%= link_to "設定する →", fixed_expenses_path, style: "color:#3b82f6; font-size:13px;" %>
+            <%= link_to "設定する →", fixed_expenses_path, style: "color:#3b82f6; font-size:13px; font-weight:600;" %>
           </p>
         <% else %>
           <% @fixed_expenses.each do |expense| %>
-            <div class="flex items-center justify-between" style="padding:14px 0; border-bottom:1px solid #f9fafb;">
-              <span style="font-size:14px; color:#374151;"><%= expense.name %></span>
-              <span style="font-size:15px; font-weight:600; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
+            <div class="flex items-center justify-between" style="padding:16px 0; border-bottom:1px solid #f3f4f6;">
+              <span style="font-size:14px; color:#374151; font-weight:500;"><%= expense.name %></span>
+              <span style="font-size:15px; font-weight:700; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
             </div>
           <% end %>
         <% end %>
       </div>
 
       <% unless @fixed_expenses.empty? %>
-        <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
-          <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
-          <span style="font-size:18px; font-weight:700; color:#2563eb;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
+        <div style="background:#eff6ff; border-top:1px solid #dbeafe; padding:20px 40px;" class="flex items-center justify-between rounded-b-2xl">
+          <span style="font-size:14px; font-weight:600; color:#1e40af;">小計</span>
+          <span style="font-size:20px; font-weight:800; color:#2563eb;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
         </div>
       <% end %>
     </div>
 
     <!-- ② 電気・ガス・水道 -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center justify-between">
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="padding:24px 40px;" class="border-b border-gray-100 flex items-center justify-between bg-gray-50">
         <div class="flex items-center gap-3">
-          <div style="width:11px; height:11px; border-radius:50%; background:#f97316; flex-shrink:0;"></div>
-          <h3 class="font-semibold text-gray-800" style="font-size:16px;">電気・ガス・水道</h3>
+          <div style="width:10px; height:10px; border-radius:50%; background:#f97316; flex-shrink:0;"></div>
+          <h3 style="font-size:15px; font-weight:700; color:#111827;">電気・ガス・水道</h3>
         </div>
         <% unentered = MonthlyBudget::UTILITIES.count { |u| @budget.send(u[:key]).nil? } %>
         <% if unentered > 0 %>
@@ -107,60 +109,60 @@
       </div>
 
       <%= form_with model: @budget, url: budget_path(@budget), method: :patch do |f| %>
-        <div style="padding:24px 32px 20px;" class="space-y-5">
+        <div style="padding:32px 40px 24px;" class="space-y-5">
           <% MonthlyBudget::UTILITIES.each do |utility| %>
             <% value = @budget.send(utility[:key]) %>
             <% blank = value.nil? %>
-            <div style="<%= blank ? 'background:#fffbeb; border:1.5px solid #fcd34d; border-radius:16px; padding:16px 20px;' : 'padding:6px 0;' %>"
+            <div style="<%= blank ? 'background:#fffbeb; border:1.5px solid #fcd34d; border-radius:16px; padding:16px 20px;' : 'padding:8px 0;' %>"
                  class="flex items-center justify-between gap-4">
               <div class="flex items-center gap-3">
                 <% if blank %>
-                  <span style="font-size:11px; background:#fde68a; color:#92400e; padding:3px 9px; border-radius:6px; font-weight:700; white-space:nowrap;">未入力</span>
+                  <span style="font-size:11px; background:#fde68a; color:#92400e; padding:3px 10px; border-radius:6px; font-weight:700; white-space:nowrap;">未入力</span>
                 <% end %>
                 <label style="font-size:15px; font-weight:500; color:#374151; white-space:nowrap;"><%= utility[:label] %></label>
               </div>
               <div class="flex items-center gap-2">
-                <span style="color:#9ca3af; font-size:15px; font-weight:500;">¥</span>
+                <span style="color:#9ca3af; font-size:15px;">¥</span>
                 <%= f.number_field utility[:key],
                       value: value&.to_i,
                       min: 0,
                       placeholder: "0",
-                      style: "width:140px; text-align:right; font-size:16px; border:1.5px solid #e5e7eb; border-radius:12px; padding:11px 16px; outline:none; font-weight:500;" %>
+                      style: "width:140px; text-align:right; font-size:16px; border:1.5px solid #e5e7eb; border-radius:12px; padding:11px 16px; outline:none; font-weight:600; color:#111827;" %>
               </div>
             </div>
           <% end %>
         </div>
 
-        <div style="padding:4px 32px 28px;">
+        <div style="padding:4px 40px 36px;">
           <%= f.submit "保存する",
-                style: "width:100%; padding:15px; background:#16a34a; color:white; font-size:15px; font-weight:700; border-radius:14px; border:none; cursor:pointer;" %>
+                style: "width:100%; padding:16px; background:#16a34a; color:white; font-size:15px; font-weight:700; border-radius:14px; border:none; cursor:pointer; letter-spacing:0.02em;" %>
         </div>
       <% end %>
 
-      <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
-        <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
-        <span style="font-size:18px; font-weight:700; color:#ea580c;">¥<%= number_with_delimiter(@budget.utility_total.to_i) %></span>
+      <div style="background:#fff7ed; border-top:1px solid #fed7aa; padding:20px 40px;" class="flex items-center justify-between rounded-b-2xl">
+        <span style="font-size:14px; font-weight:600; color:#c2410c;">小計</span>
+        <span style="font-size:20px; font-weight:800; color:#ea580c;">¥<%= number_with_delimiter(@budget.utility_total.to_i) %></span>
       </div>
     </div>
 
-    <!-- ② その他 -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div style="padding:22px 32px;" class="border-b border-gray-100 flex items-center gap-3">
-        <div style="width:11px; height:11px; border-radius:50%; background:#8b5cf6; flex-shrink:0;"></div>
-        <h3 class="font-semibold text-gray-800" style="font-size:16px;">その他</h3>
+    <!-- ③ その他 -->
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="padding:24px 40px;" class="border-b border-gray-100 flex items-center gap-3 bg-gray-50">
+        <div style="width:10px; height:10px; border-radius:50%; background:#8b5cf6; flex-shrink:0;"></div>
+        <h3 style="font-size:15px; font-weight:700; color:#111827;">その他</h3>
         <span style="font-size:12px; color:#9ca3af;">月ごとの変動費・イレギュラー支出など</span>
       </div>
 
-      <div style="padding:24px 32px;">
+      <div style="padding:32px 40px;">
         <% if @budget.monthly_expenses.empty? %>
-          <p style="font-size:14px; color:#9ca3af; text-align:center; padding:16px 0 20px;">まだ追加されていません</p>
+          <p style="font-size:14px; color:#9ca3af; text-align:center; padding:20px 0 24px;">まだ追加されていません</p>
         <% else %>
           <div class="space-y-1 mb-6">
             <% @budget.monthly_expenses.each do |expense| %>
-              <div class="flex items-center justify-between gap-3" style="padding:14px 0; border-bottom:1px solid #f9fafb;">
-                <span style="font-size:14px; color:#374151;"><%= expense.name %></span>
+              <div class="flex items-center justify-between gap-3" style="padding:16px 0; border-bottom:1px solid #f3f4f6;">
+                <span style="font-size:14px; color:#374151; font-weight:500;"><%= expense.name %></span>
                 <div class="flex items-center gap-4">
-                  <span style="font-size:15px; font-weight:600; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
+                  <span style="font-size:15px; font-weight:700; color:#1f2937;">¥<%= number_with_delimiter(expense.amount.to_i) %></span>
                   <%= button_to budget_monthly_expense_path(@budget, expense),
                         method: :delete,
                         data: { turbo_confirm: "「#{expense.name}」を削除しますか？" },
@@ -178,58 +180,57 @@
           <div style="display:flex; align-items:center; gap:10px;">
             <%= f.text_field :name,
                   placeholder: "項目名",
-                  style: "flex:1; min-width:0; font-size:14px; border:1.5px solid #e5e7eb; border-radius:12px; padding:12px 14px; outline:none;" %>
+                  style: "flex:1; min-width:0; font-size:14px; border:1.5px solid #e5e7eb; border-radius:12px; padding:12px 14px; outline:none; color:#111827;" %>
             <span style="color:#9ca3af; font-size:14px; flex-shrink:0;">¥</span>
             <%= f.number_field :amount,
                   placeholder: "0",
                   min: 1,
-                  style: "width:90px; flex-shrink:0; text-align:right; font-size:14px; border:1.5px solid #e5e7eb; border-radius:12px; padding:12px 10px; outline:none;" %>
+                  style: "width:90px; flex-shrink:0; text-align:right; font-size:14px; border:1.5px solid #e5e7eb; border-radius:12px; padding:12px 10px; outline:none; color:#111827;" %>
             <%= f.submit "追加",
-                  style: "flex-shrink:0; padding:12px 18px; background:#7c3aed; color:white; font-size:14px; font-weight:700; border-radius:12px; border:none; cursor:pointer;" %>
+                  style: "flex-shrink:0; padding:12px 20px; background:#7c3aed; color:white; font-size:14px; font-weight:700; border-radius:12px; border:none; cursor:pointer;" %>
           </div>
         <% end %>
-
       </div>
 
       <% unless @budget.monthly_expenses.empty? %>
-        <div style="background:#f9fafb; border-top:1px solid #f3f4f6; padding:18px 32px;" class="flex items-center justify-between rounded-b-2xl">
-          <span style="font-size:14px; font-weight:600; color:#4b5563;">小計</span>
-          <span style="font-size:18px; font-weight:700; color:#7c3aed;">¥<%= number_with_delimiter(@budget.other_total.to_i) %></span>
+        <div style="background:#f5f3ff; border-top:1px solid #ddd6fe; padding:20px 40px;" class="flex items-center justify-between rounded-b-2xl">
+          <span style="font-size:14px; font-weight:600; color:#5b21b6;">小計</span>
+          <span style="font-size:20px; font-weight:800; color:#7c3aed;">¥<%= number_with_delimiter(@budget.other_total.to_i) %></span>
         </div>
       <% end %>
     </div>
 
     <!-- ④ 月合計 -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      <div style="padding:22px 32px;" class="border-b border-gray-100">
-        <h3 class="font-semibold text-gray-800" style="font-size:16px;">月合計</h3>
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="padding:24px 40px;" class="border-b border-gray-100 bg-gray-50">
+        <h3 style="font-size:15px; font-weight:700; color:#111827;">月合計</h3>
       </div>
-      <div style="padding:24px 32px;" class="space-y-5">
+      <div style="padding:32px 40px;" class="space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div style="width:9px; height:9px; border-radius:50%; background:#3b82f6;"></div>
+            <span style="font-size:14px; color:#6b7280;">固定費</span>
+          </div>
+          <span style="font-size:15px; font-weight:600; color:#374151;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
+        </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div style="width:9px; height:9px; border-radius:50%; background:#f97316;"></div>
             <span style="font-size:14px; color:#6b7280;">電気・ガス・水道</span>
           </div>
-          <span style="font-size:15px; font-weight:500; color:#374151;">¥<%= number_with_delimiter(@budget.utility_total.to_i) %></span>
+          <span style="font-size:15px; font-weight:600; color:#374151;">¥<%= number_with_delimiter(@budget.utility_total.to_i) %></span>
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div style="width:9px; height:9px; border-radius:50%; background:#8b5cf6;"></div>
             <span style="font-size:14px; color:#6b7280;">その他</span>
           </div>
-          <span style="font-size:15px; font-weight:500; color:#374151;">¥<%= number_with_delimiter(@budget.other_total.to_i) %></span>
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div style="width:9px; height:9px; border-radius:50%; background:#3b82f6;"></div>
-            <span style="font-size:14px; color:#6b7280;">固定費</span>
-          </div>
-          <span style="font-size:15px; font-weight:500; color:#374151;">¥<%= number_with_delimiter(@fixed_total.to_i) %></span>
+          <span style="font-size:15px; font-weight:600; color:#374151;">¥<%= number_with_delimiter(@budget.other_total.to_i) %></span>
         </div>
       </div>
-      <div style="background:#f0fdf4; border-top:2px solid #bbf7d0; padding:22px 32px;" class="flex items-center justify-between rounded-b-2xl">
-        <span style="font-size:16px; font-weight:700; color:#1f2937;">合計</span>
-        <span style="font-size:26px; font-weight:800; color:#16a34a;">¥<%= number_with_delimiter(@budget.grand_total(@fixed_total).to_i) %></span>
+      <div style="background:#f0fdf4; border-top:2px solid #86efac; padding:28px 40px;" class="flex items-center justify-between rounded-b-2xl">
+        <span style="font-size:16px; font-weight:700; color:#14532d;">合計</span>
+        <span style="font-size:30px; font-weight:800; color:#16a34a;">¥<%= number_with_delimiter(@budget.grand_total(@fixed_total).to_i) %></span>
       </div>
     </div>
 
